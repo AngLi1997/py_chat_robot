@@ -9,7 +9,7 @@ from langchain.chains import RetrievalQA
 llm = OllamaLLM(model="llama3.1", temperature=0.1)
 embeddings = OllamaEmbeddings(model="llama3.1")
 source_document = "txt/fruit_data.txt"
-chroma_path = "./chroma_db"
+chroma_path = "../chroma_db"
 
 
 def load_knowledge():
