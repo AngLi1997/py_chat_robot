@@ -12,20 +12,20 @@ os.environ["LANGSMITH_PROJECT"] = "liang-lang-smith"
 os.environ["LANGSMITH_API_KEY"] = "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"
 
 
-vectorstore = Chroma(persist_directory="./chroma_data",
+vectorstore = Chroma(persist_directory="document_loader/chroma_data",
                      collection_name="bmos",
                      embedding_function=OllamaEmbeddings(model="nomic-embed-text:latest"))
 retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 
-llm = ChatOllama(model="llama3.1")
+llm = ChatOllama(model="deepseek-r1:7b")
 
 template = """
     上下文信息如下
     ---------------------
     {context}
     ---------------------
-    请根据以上提供的上下文信息，不依赖其他外部知识，回答以下问题
-    若你不知道答案，直接回答不知道
+    请根据以上提供的上下文信息，回答以下问题
+    回答尽量从上下文中总结
     问题: {input}
     答案:
 """
@@ -41,7 +41,7 @@ chain = create_retrieval_chain(retriever, question_answer_chain)
 
 def chat(message, history):
     result = ""
-    for chunk in chain.stream({"input": message}):
+    for chunk in chain.stream({"input": message, "history":[]}):
         result += chunk.get("answer", "")
         if result != "":
             yield result

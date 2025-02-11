@@ -6,8 +6,11 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 print("开始加载知识库...")
 
 # 加载文档
-loader = DirectoryLoader("./md", glob="**/*.md", silent_errors=True)
-docs = loader.load()
+md_doc = DirectoryLoader("./../md", glob="**/*.md", silent_errors=True).load()
+# txt_doc = DirectoryLoader("./../txt", glob="**/*.txt", silent_errors=True).load()
+
+docs = [*md_doc]
+
 for doc in docs:
     print(f'加载文件:{doc.metadata["source"]}')
 
