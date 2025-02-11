@@ -39,6 +39,8 @@ question_answer_chain = create_stuff_documents_chain(llm=llm, prompt=prompt)
 
 chain = create_retrieval_chain(retriever, question_answer_chain)
 
+
+
 def chat(message, history):
     result = ""
     for chunk in chain.stream({"input": message, "history":[]}):
@@ -47,5 +49,6 @@ def chat(message, history):
             yield result
 
 if __name__ == '__main__':
+    chain.get_graph().print_ascii()
     gr = ChatInterface(fn=chat, type="messages")
     gr.launch()
