@@ -36,12 +36,12 @@ graph = graph_builder.compile(checkpointer=memory)
 graph.get_graph().print_ascii()
 
 def chat(message, history):
-    events = graph.stream({"messages": [HumanMessage(message)]}, config, stream_mode="values")
-    for event in events:
-        for m in event['messages']:
-            if isinstance(m, AIMessage):
-                m.pretty_print()
-                yield m.content
+    result = ""
+    for message_chunk, metadata in graph.stream({"messages": [HumanMessage(message)]}, config, stream_mode="messages"):
+        if message_chunk.content:
+            result += message_chunk.content
+            if result != "":
+                yield result
 
 
 if __name__ == '__main__':
