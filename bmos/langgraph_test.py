@@ -38,9 +38,10 @@ graph.get_graph().print_ascii()
 def chat(message, history):
     events = graph.stream({"messages": [HumanMessage(message)]}, config, stream_mode="values")
     for event in events:
-        if isinstance(event, AIMessage):
-            event['messages'][-1].pretty_print()
-            yield event['messages'][-1].content
+        for m in event['messages']:
+            if isinstance(m, AIMessage):
+                m.pretty_print()
+                yield m.content
 
 
 if __name__ == '__main__':
