@@ -17,7 +17,7 @@ vectorstore = Chroma(persist_directory="document_loader/chroma_data",
                      embedding_function=OllamaEmbeddings(model="nomic-embed-text:latest"))
 retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 
-llm = ChatOllama(model="deepseek-r1:7b")
+llm = ChatOllama(model="deepseek-r1:latest")
 
 template = """
     上下文信息如下
